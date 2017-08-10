@@ -1,4 +1,10 @@
-Name: Insert %in%
-Description: Inserts `%in%` at the cursor position.
-Binding: insert_in_addin
+Name: lintr package
+Description: Apply one or more linters to all of the R files in a package.
+Binding: lintr_package
 Interactive: false
+
+Name: lintr file
+Description: --- Description ---
+Binding: lintr_file
+Interactive: true
+
