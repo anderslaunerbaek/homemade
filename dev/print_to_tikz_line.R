@@ -10,6 +10,12 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#'   library(tidyverse)
+#'   df <- iris %>% group_by(Species) %>% summarise_all(funs(mean))
+#'   df_to_table(df, path = "~/Downloads/", file_name = "test_test, v_lines = NULL, h_lines = c(1), case = 1, verbose = FALSE)
+#' }
+#'
 print_to_tikz_line <- function(x, y, color, name, save_yikz){
   round_n <- 6
   tmp <- paste0("\\addplot[",color,", fill opacity=1,mark options={scale=2}] coordinates {")
