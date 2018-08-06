@@ -74,6 +74,47 @@ df_to_table <-
       # end
       tmp <- paste0(tmp, "\\end{tabular}", "\n")
     }
+    else if (case == 2) {
+      # if
+      if (is.null(v_lines)) {
+        v_lines <-
+          paste0("r|", paste0(rep("r", ncol(df) - 1), collapse = ""))
+      }
+      #
+      tmp <- paste0(tmp, "\\begin{tabular}{", v_lines, "}")
+      # colnames
+      tmp <-
+        paste0(
+          tmp,
+          "\n",
+          paste0(colnames(df), collapse = " & "),
+          "\\\\"
+        )
+      if (1 %in% h_lines) {
+        tmp <- paste0(tmp, "\\hline \n")
+      } else {
+        tmp <- paste0(tmp, " \n")
+      }
+
+      # loop rows and cols
+      for (i in 1:nrow(df)[1]) {
+        for (j in 1:ncol(df)) {
+          if (j == ncol(df)) {
+            tmp <- paste0(tmp, df[i, j])
+          } else {
+            tmp <- paste0(tmp, df[i, j], " & ")
+          }
+        }
+        # hline
+        if ((i + 1) %in% h_lines) {
+          tmp <- paste0(tmp, "\\\\ \\hline \n")
+        } else {
+          tmp <- paste0(tmp, "\\\\ \n")
+        }
+      }
+      # end
+      tmp <- paste0(tmp, "\\end{tabular}", "\n")
+    }
     #
     write(
       tmp,
