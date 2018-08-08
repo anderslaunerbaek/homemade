@@ -29,8 +29,7 @@ df_to_gantt <-
     diff_start <- ifelse(diff_start == 0, 1, diff_start)
     #
     diff_date <- as.integer(end_date - start_date)
-    seq_month <-
-      as.Date(seq(start_date, end_date, "month"), "%Y-%m-%d")
+    seq_month <- as.Date(seq(start_date, end_date, "month"), "%Y-%m-%d")
     no_day_in_month <- sapply(seq_month, number_of_days)
 
 
@@ -142,8 +141,9 @@ df_to_gantt <-
             df_sub$date_end[n_idx],
             "} \\\\ \n"
           )
-        } else {
-          if (substr(df_sub$level[n_idx], 3, 3) != "m") {
+        }
+        else {
+          if (substr(df_sub$level[n_idx], 3, 3) != "m" & df_sub$level_tmp[n_idx] != "0") {
             tmp <- paste0(
               tmp,
               "\\ganttbar[progress=",
@@ -158,7 +158,49 @@ df_to_gantt <-
               df_sub$date_end[n_idx],
               "} \\\\ \n"
             )
-          } else {
+          }
+          else if (df_sub$level[n_idx] == "0.1" | df_sub$level[n_idx] == "0.2") {
+            tmp <- paste0(
+              tmp,
+              "\\ganttbar[progress=",
+              df_sub$process[n_idx],
+              ", name=",
+              df_sub$id_name[n_idx],
+              "]{",
+              df_sub$Task[n_idx],
+              "}{",
+              df_sub$date_start[n_idx],
+              "}{",
+              df_sub$date_end[n_idx],
+              "} \n")
+            #
+            if (df_sub$level[n_idx] == "0.2"){ tmp <- paste0(tmp, "\\\\ \n") }
+          }
+          else if (df_sub$level[n_idx] == "0.m") {
+
+            if (df_sub$Task[n_idx] == "Scope approved") { df_sub$Task[n_idx] <- "Milestones" }
+            else if (df_sub$Task[n_idx] == "Hand in") {
+              df_sub$Task[n_idx] <- ""
+              df_sub$Description[n_idx] <- "end"
+            }
+            else { df_sub$Task[n_idx] <- ""}
+
+            #
+            tmp <-
+              paste0(
+                tmp,
+                "\\ganttmilestone[name=",
+                df_sub$id_name[n_idx],
+                "]{",
+                df_sub$Task[n_idx],
+                "}{",
+                df_sub$date_start[n_idx],
+                "} \n"
+              )
+            #
+            if (df_sub$Description[n_idx] == "end"){ tmp <- paste0(tmp, "\\\\ \n") }
+          }
+          else {
             tmp <-
               paste0(
                 tmp,
