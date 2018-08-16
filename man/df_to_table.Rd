@@ -4,8 +4,8 @@
 \alias{df_to_table}
 \title{df_to_table}
 \usage{
-df_to_table(df, path, file_name, v_lines = NULL, h_lines = c(1), case = 1,
-  verbose = FALSE)
+df_to_table(df, path, file_name, v_lines = NULL, h_lines = c(1),
+  case = 1, verbose = FALSE)
 }
 \arguments{
 \item{df}{data frame or tibble}
