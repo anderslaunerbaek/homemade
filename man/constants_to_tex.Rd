@@ -4,11 +4,11 @@
 \alias{constants_to_tex}
 \title{constants_to_tex}
 \usage{
-constants_to_tex(df, path, file_name = "constants_to_tex",
+constants_to_tex(my_list, path, file_name = "constants_to_tex",
   verbose = FALSE)
 }
 \arguments{
-\item{df}{data frame or tibble}
+\item{my_list}{list with key and values}
 
 \item{path}{directory to the .tex file.}
 
@@ -17,7 +17,7 @@ constants_to_tex(df, path, file_name = "constants_to_tex",
 \item{verbose}{default `FALSE`. Set to `TRUE` for printing the string.}
 }
 \value{
-saved file/string with multiple `\def\layerseph{...}`
+saved file/string with multiple `"\def\key{...}"`
 }
 \description{
 constants_to_tex
@@ -25,11 +25,7 @@ constants_to_tex
 \examples{
 \dontrun{
   #
-  df <- dplyr::bind_rows(tibble::tibble(key="keyone",
-                                        desc=NA,
-                                        value="test12456-12.2"),
-                         tibble::tibble(key="keytwo",
-                                        desc=NA,
-                                        value="10.1"))
+  my_list <- list("keyone" ="test12456-12.2",
+                  "keytwo"="10.1")
 }
 }

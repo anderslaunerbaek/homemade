@@ -1,32 +1,31 @@
 #' constants_to_tex
 #'
-#' @param df data frame or tibble
+#' @param my_list list with key and values
 #' @param path directory to the .tex file.
 #' @param file_name name of the .tex file.
 #' @param verbose default `FALSE`. Set to `TRUE` for printing the string.
 #' @importFrom dplyr mutate
-#' @return saved file/string with multiple `\def\layerseph{...}`
+#' @return saved file/string with multiple `"\def\key{...}"`
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #'   #
-#'   df <- dplyr::bind_rows(tibble::tibble(key="keyone",
-#'                                         desc=NA,
-#'                                         value="test12456-12.2"),
-#'                          tibble::tibble(key="keytwo",
-#'                                         desc=NA,
-#'                                         value="10.1"))
+#'   my_list <- list("keyone" ="test12456-12.2",
+#'                   "keytwo"="10.1")
 #' }
 constants_to_tex <-
-  function(df,
+  function(my_list,
            path,
            file_name = "constants_to_tex",
            verbose = FALSE) {
     # initial
-    tmp <-
-      (df %>% mutate(tex = paste0("\\def\\", key, "{", value, "}")))$tex %>%
-      paste(., collapse = "\n")
+    tmp <- ""
+
+    # loop keys
+    for (key in names(my_list)){
+      tmp <- paste0(tmp, "\\def\\", key, "{", my_list[[key]], "}\n")
+    }
 
     #
     write(
