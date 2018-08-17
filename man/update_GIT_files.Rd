@@ -4,7 +4,8 @@
 \alias{update_GIT_files}
 \title{update_GIT_files}
 \usage{
-update_GIT_files(commit_msg, path, files = NULL)
+update_GIT_files(commit_msg, path = "~/MSc/Writing/Report/auto_tbl_fig/",
+  files = NULL)
 }
 \arguments{
 \item{commit_msg}{msg which describes the commit.}

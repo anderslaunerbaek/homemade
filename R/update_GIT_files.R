@@ -12,7 +12,7 @@
 #'   update_GIT_files(commit_msg = "test", path = "~/Downloads/test/", files = NULL)
 #' }
 #'
-update_GIT_files <- function(commit_msg, path, files = NULL) {
+update_GIT_files <- function(commit_msg, path = "~/MSc/Writing/Report/auto_tbl_fig/", files = NULL) {
   #
   recent_wd <- getwd()
   setwd(path)
@@ -30,7 +30,8 @@ update_GIT_files <- function(commit_msg, path, files = NULL) {
   # git commit
   system(paste("git commit -m'", commit_msg, "'"))
   # git push
-  system("git push")
+  # system("git push")
+  message("\n\nRemember to push!\n\n")
 
   # get back to the normal wd agian
   setwd(recent_wd)
