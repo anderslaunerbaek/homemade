@@ -16,7 +16,7 @@
 #' }
 constants_to_tex <-
   function(my_list,
-           path,
+           path = "~/MSc/Writing/Report/auto_tbl_fig/",
            file_name = "constants_to_tex",
            verbose = FALSE) {
     # initial

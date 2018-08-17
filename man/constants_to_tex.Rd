@@ -4,8 +4,8 @@
 \alias{constants_to_tex}
 \title{constants_to_tex}
 \usage{
-constants_to_tex(my_list, path, file_name = "constants_to_tex",
-  verbose = FALSE)
+constants_to_tex(my_list, path = "~/MSc/Writing/Report/auto_tbl_fig/",
+  file_name = "constants_to_tex", verbose = FALSE)
 }
 \arguments{
 \item{my_list}{list with key and values}
