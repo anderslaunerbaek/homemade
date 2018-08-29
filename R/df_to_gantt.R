@@ -178,8 +178,8 @@ df_to_gantt <-
           }
           else if (df_sub$level[n_idx] == "0.m") {
 
-            if (df_sub$Task[n_idx] == "Scope approved") { df_sub$Task[n_idx] <- "Milestones" }
-            else if (df_sub$Task[n_idx] == "Hand in") {
+            if (df_sub$Task[n_idx] == "Scope Submission") { df_sub$Task[n_idx] <- "Milestones" }
+            else if (df_sub$Task[n_idx] == "Submission") {
               df_sub$Task[n_idx] <- ""
               df_sub$Description[n_idx] <- "end"
             }
