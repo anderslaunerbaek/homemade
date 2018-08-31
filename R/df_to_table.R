@@ -6,7 +6,11 @@
 #' @param v_lines vertical lines in table.
 #' @param h_lines horizontial lines in table.
 #' @param case correspond to different types of tables.
+#' @param n_digits The number of digits in the table. Default is 4 for numeric columns.
 #' @param verbose default `FALSE`. Set to `TRUE` for printing the string.
+#'
+#' @importFrom dplyr mutate_if
+#' @importFrom dplyr funs
 #'
 #' @return saved file/string with a default tabular table.
 #' @export
@@ -24,7 +28,12 @@ df_to_table <-
            v_lines = NULL,
            h_lines = c(1),
            case = 1,
+           n_digits = 4,
            verbose = FALSE) {
+
+    # N digitgs
+    df <- df %>% mutate_if(is.numeric, funs(round(., n_digits)))
+
     #
     tmp <- ""
 

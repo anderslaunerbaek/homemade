@@ -5,7 +5,7 @@
 \title{df_to_table}
 \usage{
 df_to_table(df, path, file_name, v_lines = NULL, h_lines = c(1),
-  case = 1, verbose = FALSE)
+  case = 1, n_digits = 4, verbose = FALSE)
 }
 \arguments{
 \item{df}{data frame or tibble}
@@ -19,6 +19,8 @@ df_to_table(df, path, file_name, v_lines = NULL, h_lines = c(1),
 \item{h_lines}{horizontial lines in table.}
 
 \item{case}{correspond to different types of tables.}
+
+\item{n_digits}{The number of digits in the table. Default is 4 for numeric columns.}
 
 \item{verbose}{default `FALSE`. Set to `TRUE` for printing the string.}
 }
