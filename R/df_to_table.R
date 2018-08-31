@@ -11,6 +11,7 @@
 #'
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr funs
+#' @importFrom magrittr "%>%"
 #'
 #' @return saved file/string with a default tabular table.
 #' @export

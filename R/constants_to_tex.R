@@ -1,6 +1,7 @@
 #' constants_to_tex
 #'
 #' @param my_list list with key and values
+#' @param n_digits The number of digits in text. Default is 4 for numeric values.
 #' @param path directory to the .tex file.
 #' @param file_name name of the .tex file.
 #' @param verbose default `FALSE`. Set to `TRUE` for printing the string.
@@ -16,6 +17,7 @@
 #' }
 constants_to_tex <-
   function(my_list,
+           n_digits = 4L,
            path = "~/MSc/Writing/Report/auto_tbl_fig/",
            file_name = "constants_to_tex",
            verbose = FALSE) {
@@ -24,7 +26,9 @@ constants_to_tex <-
 
     # loop keys
     for (key in names(my_list)){
-      tmp <- paste0(tmp, "\\def\\", key, "{", my_list[[key]], "}\n")
+      tmp <- paste0(tmp, "\\def\\", key, "{", ifelse(is.numeric(my_list[[key]]),
+                                                     round(my_list[[key]],n_digits),
+                                                     my_list[[key]]), "}\n")
     }
 
     #

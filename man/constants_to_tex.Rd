@@ -4,11 +4,14 @@
 \alias{constants_to_tex}
 \title{constants_to_tex}
 \usage{
-constants_to_tex(my_list, path = "~/MSc/Writing/Report/auto_tbl_fig/",
+constants_to_tex(my_list, n_digits = 4L,
+  path = "~/MSc/Writing/Report/auto_tbl_fig/",
   file_name = "constants_to_tex", verbose = FALSE)
 }
 \arguments{
 \item{my_list}{list with key and values}
+
+\item{n_digits}{The number of digits in text. Default is 4 for numeric values.}
 
 \item{path}{directory to the .tex file.}
 
