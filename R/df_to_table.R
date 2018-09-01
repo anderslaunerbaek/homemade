@@ -24,7 +24,7 @@
 #' }
 df_to_table <-
   function(df,
-           path,
+           path = "~/MSc/Writing/Report/auto_tbl_fig/",
            file_name,
            v_lines = NULL,
            h_lines = c(1),
@@ -32,19 +32,35 @@ df_to_table <-
            n_digits = 4,
            verbose = FALSE) {
 
-    # N digitgs
-    df <- df %>% mutate_if(is.numeric, funs(round(., n_digits)))
+    # if
+    if (is.null(v_lines)) {
+
+      if(ncol(df) > 1) {
+        v_lines <- ifelse(is.character(df[[1]]),"l|","r|")
+        for (col_idx in 2:ncol(df)){
+          v_lines <- paste0(v_lines, ifelse(is.character(df[[col_idx]]),"l","r"))
+        }
+      } else {
+        v_lines <- ifelse(is.character(df[[1]]),"l","r")
+      }
+
+      # v_lines <-
+      #   paste0("r|", paste0(rep("r", ncol(df) - 1), collapse = ""))
+    }
+
+
+    # N digitgs and pretty
+    df <- df %>%
+      mutate_if(is.integer, funs(prettyNum(., big.mark = ","))) %>%
+      mutate_if(is.numeric, funs(round(., n_digits))) %>%
+      mutate_if(is.numeric, funs(prettyNum(., big.mark = ",", decimal.mark = ".")))
 
     #
     tmp <- ""
 
+
     # switch case
     if (case == 1) {
-      # if
-      if (is.null(v_lines)) {
-        v_lines <-
-          paste0("r|", paste0(rep("r", ncol(df) - 1), collapse = ""))
-      }
       #
       tmp <- paste0(tmp, "\\begin{tabular}{", v_lines, "}")
       # colnames
@@ -85,11 +101,6 @@ df_to_table <-
       tmp <- paste0(tmp, "\\end{tabular}", "\n")
     }
     else if (case == 2) {
-      # if
-      if (is.null(v_lines)) {
-        v_lines <-
-          paste0("r|", paste0(rep("r", ncol(df) - 1), collapse = ""))
-      }
       #
       tmp <- paste0(tmp, "\\begin{tabular}{", v_lines, "}")
       # colnames

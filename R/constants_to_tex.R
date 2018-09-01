@@ -26,9 +26,19 @@ constants_to_tex <-
 
     # loop keys
     for (key in names(my_list)){
-      tmp <- paste0(tmp, "\\def\\", gsub("_", "", key), "{", ifelse(is.numeric(my_list[[key]]),
-                                                     round(my_list[[key]],n_digits),
-                                                     my_list[[key]]), "}\n")
+      #
+      value <- my_list[[key]]
+      # make pretty
+      if (is.numeric(value)) {
+        value <- prettyNum(round(value, n_digits),
+                           big.mark = ",",
+                           decimal.mark = ".")
+      } else if(is.integer(value)){
+        value <- prettyNum(value,
+                           big.mark = ",",
+                           decimal.mark = ".")
+      }
+      tmp <- paste0(tmp, "\\def\\", gsub("_", "", key), "{", value, "}\n")
     }
 
     #
