@@ -8,6 +8,8 @@
 #' @param case correspond to different types of tables.
 #' @param n_digits The number of digits in the table. Default is 4 for numeric columns.
 #' @param verbose default `FALSE`. Set to `TRUE` for printing the string.
+#' @param model_name Model name for CM.
+#' @param norm_cm is CM normalized?
 #'
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr funs
@@ -30,7 +32,9 @@ df_to_table <-
            h_lines = c(1),
            case = 1,
            n_digits = 4,
-           verbose = FALSE) {
+           verbose = FALSE,
+           model_name = NULL,
+           norm_cm = FALSE) {
 
     # if
     if (is.null(v_lines)) {
@@ -135,6 +139,32 @@ df_to_table <-
       }
       # end
       tmp <- paste0(tmp, "\\end{tabular}", "\n")
+    }
+    else if (case == 3) {
+
+      row_labels <- row.names(df)
+      col_labels <- colnames(df)
+      shape <- dim(df)
+
+      cm_case <- ifelse(any(stringi::stri_detect(str = col_labels, regex = "Acc")), "p_metric", "non")
+      model_name <- ifelse(is.null(model_name), "Class", model_name)
+      text <- ifelse(norm_cm, "Normalized pred. (in $\\%$)", "Predicted")
+
+      if (cm_case == "p_metric") {
+        tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-4), collapse = ""),"|rrrr}","\n")
+        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-4,"}{c|}{",text,"}&\\multicolumn{4}{c}{Per-class metric (in $\\%$)} \\\\ \n")
+        tmp <- paste0(tmp,"\\multirow{",shape[2]-2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Pre.&Sen.&F$_1$&Acc.  \\\\\\hline \n")
+      } else {
+        tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]), collapse = ""),"} \n")
+        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2],"}{c}{",text,"} \\\\ \n")
+        tmp <- paste0(tmp,"\\multirow{",shape[2]+2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), " \\\\\\hline \n")
+      }
+
+      for (ii in 1:nrow(df)) {
+        tmp <- paste0(tmp, "&", row_labels[ii], "&", paste0(df[ii, ], collapse = "&"), "\\\\ \n")
+
+      }
+      tmp <- paste0(tmp, "\\end{tabular} \n")
     }
     #
     write(

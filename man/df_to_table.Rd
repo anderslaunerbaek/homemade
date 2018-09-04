@@ -6,7 +6,7 @@
 \usage{
 df_to_table(df, path = "~/MSc/Writing/Report/auto_tbl_fig/", file_name,
   v_lines = NULL, h_lines = c(1), case = 1, n_digits = 4,
-  verbose = FALSE)
+  verbose = FALSE, model_name = NULL, norm_cm = FALSE)
 }
 \arguments{
 \item{df}{data frame or tibble}
@@ -24,6 +24,10 @@ df_to_table(df, path = "~/MSc/Writing/Report/auto_tbl_fig/", file_name,
 \item{n_digits}{The number of digits in the table. Default is 4 for numeric columns.}
 
 \item{verbose}{default `FALSE`. Set to `TRUE` for printing the string.}
+
+\item{model_name}{Model name for CM.}
+
+\item{norm_cm}{is CM normalized?}
 }
 \value{
 saved file/string with a default tabular table.
