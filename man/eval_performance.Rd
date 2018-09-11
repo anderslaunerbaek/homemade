@@ -7,8 +7,8 @@
 eval_performance(y_act = sample(1:5, 400, TRUE), y_pred = c(sample(1:5,
   200, TRUE), rep(5, 200)), order_classes = c(1, 2, 3, 4, 5),
   prior_classes = NULL, label_classes = paste(1:5),
-  file_name = "test", model_name = NULL, norm_cm = TRUE,
-  performace_metric = TRUE)
+  file_name = "test", create_tex_table = TRUE, model_name = NULL,
+  norm_cm = TRUE, performace_metric = TRUE)
 }
 \arguments{
 \item{y_act}{correct class}
