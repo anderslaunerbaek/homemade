@@ -21,6 +21,8 @@ eval_performance(y_act = sample(1:5, 400, TRUE), y_pred = c(sample(1:5,
 
 \item{file_name}{name of tex table file}
 
+\item{create_tex_table}{default is `TRUE`}
+
 \item{model_name}{name of model, default is `NULL`}
 
 \item{norm_cm}{normalize the CM?, default is `TRUE`}

@@ -81,6 +81,7 @@ magick_to_array <- function(img, channels = 3){
 #' @param order_classes index of class name
 #' @param label_classes class labels (unique)
 #' @param file_name name of tex table file
+#' @param create_tex_table default is `TRUE`
 #' @param model_name name of model, default is `NULL`
 #' @param norm_cm normalize the CM?, default is `TRUE`
 #' @param performace_metric include performance metrics, default is `TRUE`
