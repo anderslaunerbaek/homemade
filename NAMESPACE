@@ -2,6 +2,7 @@
 
 export(array_to_view)
 export(bootstrap)
+export(class_weights)
 export(constants_to_tex)
 export(df_to_gantt)
 export(df_to_table)

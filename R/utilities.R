@@ -8,15 +8,10 @@
 #' @export
 #'
 load_obj <- function(file_path) {
-  env[[load(file_path, new.env())[1]]]
+  env <- new.env()
+  nm <- load(file_path, env)[1]
+  env[[nm]]
 }
-
-# utilities
-library(magick)
-library(tidyverse)
-library(stringi)
-
-
 
 #' update_avg_mean
 #'
@@ -196,7 +191,6 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   return(
     list(
       "accuracy" = accuracy,
-      "prevalence" = prevalence,
       "precision" = precision,
       "recall" = recall,
       "F1" = F1,

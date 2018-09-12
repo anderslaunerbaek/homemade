@@ -26,7 +26,7 @@ update_GIT_files <- function(commit_msg, path = "~/MSc/Writing/Report/auto_tbl_f
   # git status
   system("git status")
   # git pull
-  system("git pull")
+  # system("git pull")
   # git add
   system(paste("git add", files))
   # git commit
