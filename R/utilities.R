@@ -95,6 +95,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
                              prior_classes = NULL,
                              label_classes = paste(1:5),
                              file_name = "test",
+                             create_tex_table = TRUE,
                              model_name = NULL,
                              norm_cm = TRUE,
                              performace_metric = TRUE) {
@@ -134,7 +135,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   expAcc <- sum(p * q)
 
   # per class metric
-  accuracy <- diag / n
+  accuracy <- diag / (rowsums + colsums - diag) # TODO
   precision <- diag / colsums
   precision[is.nan(precision)] <- 0
   recall <- diag / rowsums
@@ -154,7 +155,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   kappa_mac <- ifelse(kappa_mac < 0, 0, kappa_mac)
 
   # micro (best for imblanaced data)
-  accuracy_mic <- diag_sum / n
+  accuracy_mic <- diag_sum /  (rowsums_sum + colsums_sum - diag_sum) # TODO
   precision_mic <- diag_sum / colsums_sum
   precision_mic[is.nan(precision_mic)] <- 0
   recall_mic <- diag_sum / rowsums_sum
@@ -179,13 +180,16 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   }
 
   # create table
-  df_to_table(
-    df = cm,
-    case = 3,
-    file_name = file_name,
-    norm_cm = norm_cm,
-    model_name = model_name
-  )
+  if(create_tex_table){
+    df_to_table(
+      df = cm,
+      case = 3,
+      file_name = file_name,
+      norm_cm = norm_cm,
+      model_name = model_name
+    )
+  }
+
 
   # return
   return(
