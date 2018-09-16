@@ -292,6 +292,8 @@ get_train_and_test <- function(df,
   if (balanced) {
     for (ii in 1:nrow(tmp)) {
       df_sub <- df %>% filter(label == tmp$label[ii])
+
+
       df$test[df$idx %in% sample(df_sub$idx, size = floor(tmp$w[ii] * nrow(df) * pct))] <-
         TRUE
     }
@@ -300,7 +302,7 @@ get_train_and_test <- function(df,
       TRUE
   }
   # only return relevant columns...
-  df <- df %>% select(sagsnr, test, label)
+  df <- df %>% select(sagsnr, path, test, label)
 
   # return
   return(df)
