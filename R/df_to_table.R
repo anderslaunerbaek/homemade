@@ -143,7 +143,7 @@ df_to_table <-
     }
     else if (case == 3) {
 
-      row_labels <- row.names(df)
+
       col_labels <- colnames(df)
       shape <- dim(df)
 
@@ -152,10 +152,13 @@ df_to_table <-
       text <- ifelse(norm_cm, "Normalized pred. (in $\\%$)", "Predicted")
 
       if (cm_case == "p_metric") {
+        row_labels <- col_labels[1:(length(col_labels)-5)]
+
         tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-5), collapse = ""),"|rrrrr}","\n")
         tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-5,"}{c|}{",text,"}&\\multicolumn{5}{c}{Per-class metric (in $\\%$)} \\\\ \n")
         tmp <- paste0(tmp,"\\multirow{",shape[2]-2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Pre.&Sen.&F$_1$&Acc.&Kap.  \\\\\\hline \n")
       } else {
+        row_labels <- col_labels
         tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]), collapse = ""),"} \n")
         tmp <- paste0(tmp, "&& \\multicolumn{",shape[2],"}{c}{",text,"} \\\\ \n")
         tmp <- paste0(tmp,"\\multirow{",shape[2]+2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), " \\\\\\hline \n")

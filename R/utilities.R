@@ -86,6 +86,8 @@ magick_to_array <- function(img, channels = 3){
 #' @param norm_cm normalize the CM?, default is `TRUE`
 #' @param performace_metric include performance metrics, default is `TRUE`
 #'
+#' @importFrom tibble tibble
+#'
 #' @return a text table and a list with performance metrics.
 #' @export
 #'
@@ -94,7 +96,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
                              y_pred = c(sample(1:5, 200, TRUE), rep(5, 200)),
                              order_classes = c(1, 2, 3, 4, 5),
                              prior_classes = NULL,
-                             label_classes = paste(1:5),
+                             label_classes = c("one", "two", "cat", "cow", "dog"),
                              file_name = "test",
                              create_tex_table = TRUE,
                              model_name = NULL,
