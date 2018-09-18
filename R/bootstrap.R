@@ -18,7 +18,7 @@ bootstrap <- function(values, n_sim = 1000000, p = 0.05){
   values <- sample(values, size = n_sim, replace = TRUE)
   values_std <- sd(values)
   values_mean <- mean(values)
-    # # normal dist
+  # # normal dist
   # error <- qnorm(p = c(p / 2, 1 - p / 2)) * values_std / sqrt(n_sim)
   # t dist
   error <- qt(p = c(p / 2, 1 - p / 2), df = n_sim-1) * values_std / sqrt(n_sim)

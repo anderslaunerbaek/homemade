@@ -178,6 +178,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
     cm$Sen <- as.integer(round(recall * 100))
     cm$F1 <- as.integer(round(F1 * 100))
     cm$Acc <- as.integer(round(accuracy * 100))
+    cm$Kap <- as.integer(round(kappa * 100))
   }
 
   # create table

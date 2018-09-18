@@ -14,6 +14,7 @@
 #' @importFrom dplyr mutate_if
 #' @importFrom dplyr funs
 #' @importFrom magrittr "%>%"
+#' @importFrom stringi stri_detect
 #'
 #' @return saved file/string with a default tabular table.
 #' @export
@@ -146,14 +147,14 @@ df_to_table <-
       col_labels <- colnames(df)
       shape <- dim(df)
 
-      cm_case <- ifelse(any(stringi::stri_detect(str = col_labels, regex = "Acc")), "p_metric", "non")
+      cm_case <- ifelse(any(stri_detect(str = col_labels, regex = "Acc")), "p_metric", "non")
       model_name <- ifelse(is.null(model_name), "Class", model_name)
       text <- ifelse(norm_cm, "Normalized pred. (in $\\%$)", "Predicted")
 
       if (cm_case == "p_metric") {
-        tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-4), collapse = ""),"|rrrr}","\n")
-        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-4,"}{c|}{",text,"}&\\multicolumn{4}{c}{Per-class metric (in $\\%$)} \\\\ \n")
-        tmp <- paste0(tmp,"\\multirow{",shape[2]-2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Pre.&Sen.&F$_1$&Acc.  \\\\\\hline \n")
+        tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-5), collapse = ""),"|rrrrr}","\n")
+        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-5,"}{c|}{",text,"}&\\multicolumn{5}{c}{Per-class metric (in $\\%$)} \\\\ \n")
+        tmp <- paste0(tmp,"\\multirow{",shape[2]-2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Pre.&Sen.&F$_1$&Acc.&Kap.  \\\\\\hline \n")
       } else {
         tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]), collapse = ""),"} \n")
         tmp <- paste0(tmp, "&& \\multicolumn{",shape[2],"}{c}{",text,"} \\\\ \n")
