@@ -4,7 +4,7 @@
 \alias{hog_descriptor}
 \title{hog_descriptor}
 \usage{
-hog_descriptor(img, cell = 3, n_bins = 9)
+hog_descriptor(img, cell, n_bins)
 }
 \arguments{
 \item{img}{a gray-scale matrix.}

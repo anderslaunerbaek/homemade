@@ -7,16 +7,15 @@
 #' @param cell the number of HOG windows per bound box.
 #' @param n_bins the number of histogram bins.
 #'
+#' @importFrom dplyr "%>%"
+#'
 #' @return a feature vector of length `cell^2 * n_bins`.
 #' @export
 #'
-hog_descriptor <- function(img, cell = 3, n_bins = 9) {
-
-  # set the number of HOG windows per bound box
-  nwin_y <- nwin_x <- cell
+hog_descriptor <- function(img, cell, n_bins) {
 
   # initial vector to hog features
-  H <- numeric(nwin_y * nwin_x * n_bins)
+  H <- numeric(cell * cell * n_bins)
 
   # image dimensions
   rows <- dim(img)[1]
@@ -37,19 +36,21 @@ hog_descriptor <- function(img, cell = 3, n_bins = 9) {
   angles <- atan2(grad_y, grad_x)
   magnit <- sqrt(grad_y^2 + grad_x^2) # eq. 5.8
 
-  # ??
-  step_x <- floor(cols / (nwin_x + 1))
-  step_y <- floor(rows / (nwin_y + 1))
+  # calculate features per window
+  step_x <- floor(cols / (cell + 1))
+  step_y <- floor(rows / (cell + 1))
   count <- 0
   # loop
-  for (n in 0:(nwin_y-1)) {
-    for (m in 0:(nwin_x-1)) {
+  for (n in 0:(cell-1)) {
+    for (m in 0:(cell-1)) {
       # increment iterator
       count <- count + 1
       # subset
-      angles_sub <- angles[(n*step_y+1):((n+2)*step_y), (m*step_x+1):((m+2)*step_x)]  %>%
+      angles_sub <- angles[(n*step_y+1):((n+2)*step_y),
+                           (m*step_x+1):((m+2)*step_x)]  %>%
         as.vector()
-      magnit_sub <- magnit[(n*step_y+1):((n+2)*step_y), (m*step_x+1):((m+2)*step_x)]  %>%
+      magnit_sub <- magnit[(n*step_y+1):((n+2)*step_y),
+                           (m*step_x+1):((m+2)*step_x)]  %>%
         as.vector()
       #
       bin_count <- 0
@@ -60,15 +61,17 @@ hog_descriptor <- function(img, cell = 3, n_bins = 9) {
                           by = (2*pi/n_bins))) {
         # increment
         bin_count <- bin_count + 1
-        for (k in 1:length(angles_sub)) {
-          if (angles_sub[k] < ang_lim) {
-            angles_sub[k] <- 100
-            H_sub[bin_count] <- H_sub[bin_count] + magnit_sub[k]
-          }
-        }
+        # vectorized if sentence
+        idx <- angles_sub < ang_lim
+        #
+        angles_sub[idx] <- 100
+        H_sub[bin_count] <- H_sub[bin_count] + sum(magnit_sub[idx])
       }
       # normalize and return values
-      H[((count-1)*n_bins+1):(count*n_bins)] <- H_sub / sqrt(sum(H_sub^2))
+      H_sub <- H_sub / sqrt(sum(H_sub^2))
+      H_sub[is.nan(H_sub)] <- 0
+
+      H[((count-1)*n_bins+1):(count*n_bins)] <- H_sub
     }
   }
   # return HOG features
