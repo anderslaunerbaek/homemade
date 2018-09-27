@@ -170,6 +170,30 @@ df_to_table <-
       }
       tmp <- paste0(tmp, "\\end{tabular} \n")
     }
+    else if (case == 4) {
+
+
+      col_labels <- colnames(df)
+      shape <- dim(df)
+
+
+      model_name <- ifelse(is.null(model_name), "Class", model_name)
+      text <- ifelse(norm_cm, "Normalized pred. (in $\\%$)", "Predicted")
+
+
+        row_labels <- col_labels[1:(length(col_labels)-1)]
+
+        tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-1), collapse = ""),"|r}","\n")
+        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-1,"}{c|}{",text,"}&\\multicolumn{1}{c}{Per-class metric (in $\\%$)} \\\\ \n")
+        tmp <- paste0(tmp,"\\multirow{",shape[2]-2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Kappa  \\\\\\hline \n")
+
+
+      for (ii in 1:nrow(df)) {
+        tmp <- paste0(tmp, "&", row_labels[ii], "&", paste0(df[ii, ], collapse = "&"), "\\\\ \n")
+
+      }
+      tmp <- paste0(tmp, "\\end{tabular} \n")
+    }
     #
     write(
       tmp,
