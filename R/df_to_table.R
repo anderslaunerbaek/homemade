@@ -184,8 +184,8 @@ df_to_table <-
         row_labels <- col_labels[1:(length(col_labels)-1)]
 
         tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-1), collapse = ""),"|r}","\n")
-        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-1,"}{c|}{",text,"}&\\multicolumn{1}{c}{Per-class metric (in $\\%$)} \\\\ \n")
-        tmp <- paste0(tmp,"\\multirow{",shape[2]-2,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Kappa  \\\\\\hline \n")
+        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-1,"}{c|}{",text,"}&\\multicolumn{1}{c}{Per-class} \\\\ \n")
+        tmp <- paste0(tmp,"\\multirow{",shape[2]+1,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Kappa (\\%)  \\\\\\hline \n")
 
 
       for (ii in 1:nrow(df)) {
