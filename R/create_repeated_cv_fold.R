@@ -1,4 +1,4 @@
-#' adde
+#' create_repeated_cv_fold
 #'
 #' @param idx indecies
 #' @param pct_test percentage of indecies for test
