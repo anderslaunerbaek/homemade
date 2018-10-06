@@ -22,23 +22,36 @@ hog_descriptor <- function(img, cell, n_bins) {
   cols <- dim(img)[2]
 
   # calculate (approximations of) gradients
-  grad_x <- matrix(0, nrow = rows, ncol = cols)
-  grad_y <- matrix(0, nrow = rows, ncol = cols)
-  for(i in 2:(cols-1)) {
-    for(j in 2:(rows-1)) {
+  grad_x <- matrix(0, nrow = rows-1, ncol = cols)
+  grad_y <- matrix(0, nrow = rows-1, ncol = cols)
+
+  # sob_h <- matrix(c(-1,0,1,-2,0,2,1,0,1), nrow = 3, ncol = 3)
+  # sob_v <- matrix(c(-1,-2,-1,0,0,0,1,2,1), nrow = 3, ncol = 3)
+  D1_mask <- matrix(c(-1,0,1), nrow = 1, ncol = 3)
+
+  for(x in 2:(cols-1)) {
+    for(y in 2:(rows-1)) {
       # approx eq. 5.10 and 5.11
-      grad_x[j,i] <- img[j + 1, i] - img[j - 1, i]
-      grad_y[j,i] <- img[j, i + 1] - img[j, i - 1]
+      # grad_x[y, x] <- sum(img[(y - 1):(y + 1), (x - 1):(x + 1)] * sob_h)
+      # grad_y[y, x] <- sum(img[(y - 1):(y + 1), (x - 1):(x + 1)] * sob_v)
+
+      grad_x[y, x] <- sum(img[y, (x - 1):(x + 1)] * D1_mask)
+      grad_y[y, x] <- sum(img[(y - 1):(y + 1), y] * D1_mask)
     }
   }
+
+
+  # subset
+  grad_x <- grad_x[2:(rows-1), 2:(cols-1)]
+  grad_y <- grad_y[2:(rows-1), 2:(cols-1)]
 
   # calculate angles and magnitudes
   angles <- atan2(grad_y, grad_x)
   magnit <- sqrt(grad_y^2 + grad_x^2) # eq. 5.8
 
   # calculate features per window
-  step_x <- floor(cols / (cell + 1))
-  step_y <- floor(rows / (cell + 1))
+  step_x <- floor(ncol(angles) / (cell + 1))
+  step_y <- floor(nrow(angles) / (cell + 1))
   count <- 0
   # loop
   for (n in 0:(cell-1)) {
