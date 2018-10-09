@@ -13,8 +13,7 @@
 #' @export
 #'
 hog_descriptor <- function(img, cell, n_bins) {
-
-  # initial vector to hog features
+# initial vector to hog features
   H <- numeric(cell * cell * n_bins)
 
   # image dimensions
@@ -25,6 +24,7 @@ hog_descriptor <- function(img, cell, n_bins) {
   grad_x <- matrix(0, nrow = rows-1, ncol = cols)
   grad_y <- matrix(0, nrow = rows-1, ncol = cols)
 
+  # filters for edge
   # sob_h <- matrix(c(-1,0,1,-2,0,2,1,0,1), nrow = 3, ncol = 3)
   # sob_v <- matrix(c(-1,-2,-1,0,0,0,1,2,1), nrow = 3, ncol = 3)
   D1_mask <- matrix(c(-1,0,1), nrow = 1, ncol = 3)

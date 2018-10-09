@@ -4,10 +4,13 @@
 \alias{create_repeated_cv_fold}
 \title{create_repeated_cv_fold}
 \usage{
-create_repeated_cv_fold(idx, pct_test, n_rep, n_fold, grid)
+create_repeated_cv_fold(idx, labels = NULL, pct_test, n_rep, n_fold,
+  grid)
 }
 \arguments{
 \item{idx}{indecies}
+
+\item{labels}{class labels. default is `NULL`. If provided then there will be a balanced representation of the classes in train and test.}
 
 \item{pct_test}{percentage of indecies for test}
 
@@ -26,6 +29,7 @@ create_repeated_cv_fold
 \examples{
 \dontrun{
 create_repeated_cv_fold(idx = 1:100,
+                        labels <- sample(c(1,2,3), size = 100, replace = TRUE),
                         pct_test = 0.2,
                         n_rep = 10,
                         n_fold = 5,
