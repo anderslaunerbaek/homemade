@@ -125,29 +125,48 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   }
 
   # performance calculations ----
+
   n <- sum(cm)
-  nc <- dim(cm)[1]
-  diag <- diag(cm)
+  TP <- diag(cm)
   rowsums <- apply(cm, 1, sum)
   colsums <- apply(cm, 2, sum)
-  diag_sum <- sum(diag)
+  diag_sum <- sum(TP)
   rowsums_sum <- sum(rowsums)
   colsums_sum <- sum(colsums)
+  #
   p <- rowsums / n
   q <- colsums / n
   expAcc <- sum(p * q)
+  FP <- rowsums - TP
+  FN <- colsums - TP
+
 
   # per class metric
-  accuracy <- diag / rowsums
-  precision <- diag / colsums
+  precision <- TP / (TP + FP)
   precision[is.nan(precision)] <- 0
-  recall <- diag / rowsums
+  recall <- TP / (TP + FN)
   recall[is.nan(recall)] <- 0
   F1 <- 2 * (precision * recall) / (precision + recall)
   F1[is.nan(F1)] <- 0
+  accuracy <- TP / (FP +TP)
+  accuracy[is.nan(accuracy)] <- 0
   kappa <- (accuracy - expAcc) / (1 - expAcc)
-  #kappa <- ifelse(kappa < 0, 0, kappa)
+  kappa[is.nan(kappa)] <- 0
 
+
+
+
+
+  # accuracy <- diag / rowsums
+  # accuracy[is.nan(accuracy)] <- 0
+  # precision <- diag / colsums
+  # precision[is.nan(precision)] <- 0
+  # recall <- diag / (diag + (colsums - diag))
+  # recall[is.nan(recall)] <- 0
+  # F1 <- 2 * (precision * recall) / (precision + recall)
+  # F1[is.nan(F1)] <- 0
+  # kappa <- (accuracy - expAcc) / (1 - expAcc)
+  # kappa[is.nan(kappa)] <- 0
 
   # macro
   accuracy_mac <- mean(accuracy)
@@ -155,18 +174,21 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   recall_mac <- mean(recall)
   F1_mac <- mean(F1)
   kappa_mac <- (accuracy_mac - expAcc) / (1 - expAcc)
-  kappa_mac <- ifelse(kappa_mac < 0, 0, kappa_mac)
+  kappa_mac[is.nan(kappa_mac)] <- 0
+
 
   # micro (best for imblanaced data)
-  accuracy_mic <- diag_sum /  (rowsums_sum + colsums_sum - diag_sum)
-  precision_mic <- diag_sum / colsums_sum
+
+  precision_mic <- sum(TP) / (sum(TP) + sum(FP))
   precision_mic[is.nan(precision_mic)] <- 0
-  recall_mic <- diag_sum / rowsums_sum
+  recall_mic <- sum(TP) / (sum(TP) + sum(FN))
   recall_mic[is.nan(recall_mic)] <- 0
   F1_mic <- 2 * (precision_mic * recall_mic) / (precision_mic + recall_mic)
   F1_mic[is.nan(F1_mic)] <- 0
+  accuracy_mic <- sum(TP) / (sum(FP) +sum(TP))
+  accuracy_mic[is.nan(accuracy_mic)] <- 0
   kappa_mic <- (accuracy_mic - expAcc) / (1 - expAcc)
-
+  kappa_mic[is.nan(kappa_mic)] <- 0
 
   perforamnce_metric <- tibble(metric = c("Acc.", "Pre.", "Sens.", "F1", "Kappa"),
          micro_avg = c(accuracy_mic, precision_mic, recall_mic, F1_mic, kappa_mic),

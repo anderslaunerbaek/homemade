@@ -22,25 +22,31 @@ eval_kappa <- function(y_act = sample(1:5, 400, TRUE),
   # re-order
   cm <- cm[order_classes, order_classes]
 
+
+
   n <- sum(cm)
-  diag <- diag(cm)
+  TP <- diag(cm)
   rowsums <- apply(cm, 1, sum)
   colsums <- apply(cm, 2, sum)
-  diag_sum <- sum(diag)
-  rowsums_sum <- sum(rowsums)
-  colsums_sum <- sum(colsums)
+  #
   p <- rowsums / n
   q <- colsums / n
   expAcc <- sum(p * q)
+  FP <- rowsums - TP
+  FN <- colsums - TP
 
   # per class metric
-  accuracy <- diag / (rowsums + colsums - diag)
+  accuracy <- TP / (FP +TP)
+  accuracy[is.nan(accuracy)] <- 0
   kappa <- (accuracy - expAcc) / (1 - expAcc)
-  kappa <- ifelse(kappa < 0, 0, kappa)
+  kappa[is.nan(kappa)] <- 0
 
   # micro (best for imblanaced data)
-  accuracy_mic <- diag_sum /  (rowsums_sum + colsums_sum - diag_sum)
+  accuracy_mic <- sum(TP) / (sum(FP) +sum(TP))
+  accuracy_mic[is.nan(accuracy_mic)] <- 0
+
   kappa_mic <- (accuracy_mic - expAcc) / (1 - expAcc)
+  kappa_mic[is.nan(kappa_mic)] <- 0
 
   # return
   list("kappa" = kappa_mic,
