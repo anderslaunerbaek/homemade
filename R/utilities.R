@@ -138,7 +138,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   expAcc <- sum(p * q)
 
   # per class metric
-  accuracy <- diag / (rowsums + colsums - diag)
+  accuracy <- diag / rowsums
   precision <- diag / colsums
   precision[is.nan(precision)] <- 0
   recall <- diag / rowsums
@@ -146,7 +146,7 @@ eval_performance <- function(y_act = sample(1:5, 400, TRUE),
   F1 <- 2 * (precision * recall) / (precision + recall)
   F1[is.nan(F1)] <- 0
   kappa <- (accuracy - expAcc) / (1 - expAcc)
-  kappa <- ifelse(kappa < 0, 0, kappa)
+  #kappa <- ifelse(kappa < 0, 0, kappa)
 
 
   # macro
