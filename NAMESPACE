@@ -2,6 +2,7 @@
 
 export(array_to_view)
 export(bootstrap)
+export(boxplot_to_tex)
 export(class_weights)
 export(constants_to_tex)
 export(create_repeated_cv_fold)

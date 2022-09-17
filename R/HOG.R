@@ -25,16 +25,11 @@ hog_descriptor <- function(img, cell, n_bins) {
   grad_y <- matrix(0, nrow = rows-1, ncol = cols)
 
   # filters for edge
-  # sob_h <- matrix(c(-1,0,1,-2,0,2,1,0,1), nrow = 3, ncol = 3)
-  # sob_v <- matrix(c(-1,-2,-1,0,0,0,1,2,1), nrow = 3, ncol = 3)
   D1_mask <- matrix(c(-1,0,1), nrow = 1, ncol = 3)
 
   for(x in 2:(cols-1)) {
     for(y in 2:(rows-1)) {
       # approx eq. 5.10 and 5.11
-      # grad_x[y, x] <- sum(img[(y - 1):(y + 1), (x - 1):(x + 1)] * sob_h)
-      # grad_y[y, x] <- sum(img[(y - 1):(y + 1), (x - 1):(x + 1)] * sob_v)
-
       grad_x[y, x] <- sum(img[y, (x - 1):(x + 1)] * D1_mask)
       grad_y[y, x] <- sum(img[(y - 1):(y + 1), y] * D1_mask)
     }
@@ -48,6 +43,9 @@ hog_descriptor <- function(img, cell, n_bins) {
   # calculate angles and magnitudes
   angles <- atan2(grad_y, grad_x)
   magnit <- sqrt(grad_y^2 + grad_x^2) # eq. 5.8
+
+  # # normalize
+  # magnit <- magnit / max(magnit) * 255
 
   # calculate features per window
   step_x <- floor(ncol(angles) / (cell + 1))

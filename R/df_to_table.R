@@ -181,11 +181,11 @@ df_to_table <-
       text <- ifelse(norm_cm, "Normalized pred. (in $\\%$)", "Predicted")
 
 
-        row_labels <- col_labels[1:(length(col_labels)-1)]
+      row_labels <- col_labels[1:(length(col_labels)-1)]
 
-        tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-1), collapse = ""),"|r}","\n")
-        tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-1,"}{c|}{",text,"}&\\multicolumn{1}{c}{Per-class} \\\\ \n")
-        tmp <- paste0(tmp,"\\multirow{",shape[2]+1,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "&Kappa (\\%)  \\\\\\hline \n")
+      tmp <- paste0(tmp,"\\begin{tabular}{cc|",paste0(rep("r", shape[2]-1), collapse = ""),"|r}","\n")
+      tmp <- paste0(tmp, "&& \\multicolumn{",shape[2]-1,"}{c|}{",text,"}&\\multicolumn{1}{c}{Per-class} \\\\ \n")
+      tmp <- paste0(tmp,"\\multirow{",shape[2]+1,"}{*}{",model_name,"} &&", paste0(row_labels,collapse = "&"), "& $\\kappa$ $(\\%)$  \\\\\\hline \n")
 
 
       for (ii in 1:nrow(df)) {
@@ -195,6 +195,7 @@ df_to_table <-
       tmp <- paste0(tmp, "\\end{tabular} \n")
     }
     #
+    if (!verbose) {
     write(
       tmp,
       file = paste0(path, "/", file_name, ".tex"),
@@ -202,8 +203,9 @@ df_to_table <-
       append = FALSE,
       sep = ""
     )
+    }
     message(paste0("File > " , file_name, " < is saved ..."))
     if (verbose) {
-      print(tmp, quote = FALSE)
+      cat(tmp)
     }
   }
